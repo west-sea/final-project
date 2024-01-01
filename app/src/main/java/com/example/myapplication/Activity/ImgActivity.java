@@ -1,8 +1,10 @@
 package com.example.myapplication.Activity;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -11,10 +13,12 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -36,6 +40,8 @@ public class ImgActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_img);
 
@@ -46,6 +52,17 @@ public class ImgActivity extends AppCompatActivity {
         // 어댑터 초기화
         imageAdapter = new ImageAdapter(this, imageList);
         imageGridView.setAdapter(imageAdapter);
+
+        //이미지 클릭 시 팝업 띄우기
+        // 그리드뷰에서 이미지를 클릭하여 이름을 수정할 수 있는 기능 추가
+        imageGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Uri selectedImageUri = imageList.get(position);
+                String imageName = getFileName(selectedImageUri);
+                showRenameDialog(position, imageName);
+            }
+        });
 
         callCamButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +89,63 @@ public class ImgActivity extends AppCompatActivity {
             }
         });
     }
+
+    // 이미지의 파일 이름 가져오는 메서드
+    private String getFileName(Uri uri) {
+        String fileName = null;
+        String[] projection = {MediaStore.Images.Media.DISPLAY_NAME};
+        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME);
+            fileName = cursor.getString(columnIndex);
+            cursor.close();
+        }
+        return fileName;
+    }
+
+    // 이름 수정 팝업창을 띄우는 메서드
+    private void showRenameDialog(final int position, String currentName) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("이름 수정");
+        final EditText input = new EditText(this);
+        input.setText(currentName);
+        builder.setView(input);
+
+        builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String newName = input.getText().toString();
+                // 이름 수정
+                renameImage(position, newName);
+            }
+        });
+
+        builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
+    // 이미지 이름을 수정하는 메서드
+    private void renameImage(int position, String newName) {
+        imageList.set(position, renameUri(imageList.get(position), newName));
+        imageAdapter.notifyDataSetChanged();
+    }
+
+
+    // Uri의 파일 이름을 수정하는 메서드
+    private Uri renameUri(Uri uri, String newName) {
+        // 파일 이름 가져오기
+        String fileName = getFileName(uri);
+        // 파일 경로에서 파일 이름을 새 이름으로 교체
+        String newUriString = uri.toString().replace(fileName, newName);
+        return Uri.parse(newUriString);
+    }
+
 
     private void checkPermissionAndOpenCamera() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
