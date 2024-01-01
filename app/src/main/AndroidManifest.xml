@@ -33,8 +33,23 @@
             android:name=".Activity.FreeActivity"
             android:exported="false" />
         <activity
+            android:name=".Activity.ContactAddActivity"
+            android:label="ContactAddActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.example.myapplication.ACTION_LINK_NUM_DATA" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </activity>
+        <activity
             android:name=".Activity.LinkNumActivity"
-            android:exported="false" />
+            android:exported="true"> <!-- true로 설정하면 다른 앱에서도 이 액티비티에 접근 가능 -->
+            <intent-filter>
+                <action android:name="com.example.myapplication.ACTION_LINK_NUM" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".Activity.ImgActivity"
             android:exported="false" />
