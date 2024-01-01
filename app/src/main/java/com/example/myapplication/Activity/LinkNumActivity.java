@@ -2,6 +2,7 @@ package com.example.myapplication.Activity;
 
 import android.Manifest;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -9,17 +10,22 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -57,7 +63,7 @@ public class LinkNumActivity extends AppCompatActivity {
         addContactButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openContactAddActivity();
+                openContactDialog();
             }
         });
 
@@ -65,7 +71,7 @@ public class LinkNumActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selectedItem = (String) parent.getItemAtPosition(position);
-                openContactEditActivity(selectedItem, position);
+                openEditDialog(selectedItem, position);
             }
         });
 
@@ -83,12 +89,6 @@ public class LinkNumActivity extends AppCompatActivity {
         }
     }
 
-    private void openContactEditActivity(String contactInfo, int position) {
-        Intent intent = new Intent(this, ContactAddActivity.class);
-        intent.putExtra("contactInfo", contactInfo);
-        intent.putExtra("editedPosition", position); // 현재 선택된 아이템의 위치를 전달
-        startActivityForResult(intent, ADD_CONTACT_REQUEST_CODE);
-    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -108,9 +108,78 @@ public class LinkNumActivity extends AppCompatActivity {
 
     private static final int ADD_CONTACT_REQUEST_CODE = 123;
 
-    private void openContactAddActivity() {
-        Intent intent = new Intent(this, ContactAddActivity.class);
-        startActivityForResult(intent, ADD_CONTACT_REQUEST_CODE);
+    private void openContactDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_layout, null);
+        builder.setView(dialogView);
+
+        AlertDialog contactDialog = builder.create();
+
+        EditText nameEditText = dialogView.findViewById(R.id.nameEditText);
+        EditText numberEditText = dialogView.findViewById(R.id.numberEditText);
+        Button saveButton = dialogView.findViewById(R.id.saveButton);
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = nameEditText.getText().toString().trim();
+                String number = numberEditText.getText().toString().trim();
+
+                if (!name.isEmpty() && !number.isEmpty()) {
+                    String newContact = name + ": " + number;
+                    contactList.add(newContact);
+
+                    ((MyAdapter) listView.getAdapter()).notifyDataSetChanged();
+
+                    contactDialog.dismiss();
+                } else {
+                    Toast.makeText(LinkNumActivity.this, "이름과 전화번호를 입력하세요", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        contactDialog.show();
+    }
+
+    private void openEditDialog(String contactInfo, int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View dialogView = getLayoutInflater().inflate(R.layout.edit_dialog_layout, null);
+        builder.setView(dialogView);
+
+        AlertDialog editDialog = builder.create();
+
+        EditText editNameEditText = dialogView.findViewById(R.id.editNameEditText);
+        EditText editNumberEditText = dialogView.findViewById(R.id.editNumberEditText);
+        Button updateButton = dialogView.findViewById(R.id.updateButton);
+
+        // 기존 데이터 표시
+        String[] parts = contactInfo.split(":");
+        String name = parts[0].trim();
+        String number = parts[1].trim();
+
+        editNameEditText.setText(name);
+        editNumberEditText.setText(number);
+
+        updateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String newName = editNameEditText.getText().toString().trim();
+                String newNumber = editNumberEditText.getText().toString().trim();
+
+                if (!newName.isEmpty() && !newNumber.isEmpty()) {
+                    String editedContact = newName + ": " + newNumber;
+                    contactList.set(position, editedContact);
+
+                    ((MyAdapter) listView.getAdapter()).notifyDataSetChanged();
+
+                    editDialog.dismiss();
+                } else {
+                    Toast.makeText(LinkNumActivity.this, "이름과 전화번호를 입력하세요", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        editDialog.show();
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
