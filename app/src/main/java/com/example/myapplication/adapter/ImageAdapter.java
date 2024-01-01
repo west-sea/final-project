@@ -14,9 +14,13 @@ import java.util.ArrayList;
 
 public class ImageAdapter extends ArrayAdapter<Uri> {
 
+    private ArrayList<Uri> imageList;
     public ImageAdapter(Context context, ArrayList<Uri> imageList) {
         super(context, 0, imageList);
+        this.imageList = imageList;
     }
+
+
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -34,4 +38,11 @@ public class ImageAdapter extends ArrayAdapter<Uri> {
 
         return imageView;
     }
+
+    public void renameUri(int position, Uri newUri) {
+        imageList.set(position, newUri);
+        notifyDataSetChanged();
+    }
+
+
 }

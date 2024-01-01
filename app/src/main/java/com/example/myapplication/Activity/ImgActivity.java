@@ -26,6 +26,9 @@ import androidx.core.content.ContextCompat;
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.ImageAdapter;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
@@ -37,6 +40,7 @@ public class ImgActivity extends AppCompatActivity {
     private GridView imageGridView;
     private ImageAdapter imageAdapter;
     private ArrayList<Uri> imageList = new ArrayList<>();
+    private ArrayList<JSONObject> imageInfoList = new ArrayList<>(); // 이미지 정보를 저장할 리스트
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,10 @@ public class ImgActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_img);
+        imageInfoList = new ArrayList<>();
+
+        // JSON으로 이미지 정보를 저장할 ArrayList
+        imageInfoList = new ArrayList<>();
 
         Button callCamButton = findViewById(R.id.imgCam);
         Button btnSelectImage = findViewById(R.id.btnSelectImage);
@@ -55,12 +63,15 @@ public class ImgActivity extends AppCompatActivity {
 
         //이미지 클릭 시 팝업 띄우기
         // 그리드뷰에서 이미지를 클릭하여 이름을 수정할 수 있는 기능 추가
+
+        // 이미지 클릭 시 팝업 띄우기
+        // 그리드뷰에서 이미지를 클릭하여 이름을 수정할 수 있는 기능 추가
         imageGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Uri selectedImageUri = imageList.get(position);
-                String imageName = getFileName(selectedImageUri);
-                showRenameDialog(position, imageName);
+                JSONObject imageInfo = imageInfoList.get(position);
+                String imageName = getImageName(imageInfo);
+                showRenameDialog(position, imageName, imageInfoList);
             }
         });
 
@@ -102,9 +113,20 @@ public class ImgActivity extends AppCompatActivity {
         }
         return fileName;
     }
+    // 이미지의 이름 가져오는 메서드
+    private String getImageName(JSONObject imageInfo) {
+        try {
+            return imageInfo.getString("imageName");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return "없음";
+    }
+
 
     // 이름 수정 팝업창을 띄우는 메서드
-    private void showRenameDialog(final int position, String currentName) {
+    // 이름 수정 팝업창을 띄우는 메서드
+    private void showRenameDialog(final int position, String currentName, final ArrayList<JSONObject> imageInfoList) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("이름 수정");
         final EditText input = new EditText(this);
@@ -115,8 +137,13 @@ public class ImgActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String newName = input.getText().toString();
-                // 이름 수정
-                renameImage(position, newName);
+                try {
+                    JSONObject imageInfo = imageInfoList.get(position);
+                    imageInfo.put("imageName", newName);
+                    imageAdapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -127,17 +154,21 @@ public class ImgActivity extends AppCompatActivity {
             }
         });
 
-        builder.show();
+        // 수정된 코드: 팝업창을 띄움
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
+
+
+
     // 이미지 이름을 수정하는 메서드
+    // ImgActivity 클래스 내 renameImage() 메서드 수정
     private void renameImage(int position, String newName) {
         imageList.set(position, renameUri(imageList.get(position), newName));
         imageAdapter.notifyDataSetChanged();
     }
 
-
-    // Uri의 파일 이름을 수정하는 메서드
     private Uri renameUri(Uri uri, String newName) {
         // 파일 이름 가져오기
         String fileName = getFileName(uri);
@@ -145,6 +176,7 @@ public class ImgActivity extends AppCompatActivity {
         String newUriString = uri.toString().replace(fileName, newName);
         return Uri.parse(newUriString);
     }
+
 
 
     private void checkPermissionAndOpenCamera() {
@@ -202,6 +234,15 @@ public class ImgActivity extends AppCompatActivity {
             if (requestCode == PICK_IMAGE_REQUEST && data != null) {
                 Uri selectedImageUri = data.getData();
                 imageList.add(selectedImageUri);
+                // 이미지 정보 생성 및 추가
+                JSONObject imageInfo = new JSONObject();
+                try {
+                    imageInfo.put("imageName", "없음");
+                    // 이미지 정보를 리스트에 추가
+                    imageInfoList.add(imageInfo);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 imageAdapter.notifyDataSetChanged();
             } else if (requestCode == CAMERA_REQUEST_CODE && data != null) {
                 Bundle extras = data.getExtras();
@@ -209,9 +250,19 @@ public class ImgActivity extends AppCompatActivity {
                     Bitmap imageBitmap = (Bitmap) extras.get("data");
                     Uri imageUri = getImageUri(this, imageBitmap);
                     imageList.add(imageUri);
+                    // 이미지 정보 생성 및 추가
+                    JSONObject imageInfo = new JSONObject();
+                    try {
+                        imageInfo.put("imageName", "없음");
+                        // 이미지 정보를 리스트에 추가
+                        imageInfoList.add(imageInfo);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     imageAdapter.notifyDataSetChanged();
                 }
             }
         }
     }
+
 }
