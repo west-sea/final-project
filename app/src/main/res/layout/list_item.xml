@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_margin="20dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="20dp"
+    android:descendantFocusability="blocksDescendants"
     android:orientation="horizontal"
     android:background="@drawable/corner_shape"
-    android:padding="16dp">
+    android:paddingBottom="10dp"
+    android:layout_marginBottom="16dp">
 
     <TextView
         android:id="@+id/textView"
@@ -30,7 +32,7 @@
             android:drawableStart="@drawable/ic_call"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
-            android:padding="12dp"
+            android:padding="6dp"
             android:layout_gravity="end"
             android:background="@drawable/circular_button_background"/>
 
@@ -41,7 +43,7 @@
             android:drawableStart="@drawable/ic_mem"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
-            android:padding="13dp"
+            android:padding="8dp"
             android:layout_gravity="end"
             android:background="@drawable/circular_button_background"/>
 

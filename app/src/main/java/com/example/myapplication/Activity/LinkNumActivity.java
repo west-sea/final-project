@@ -8,9 +8,11 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -50,6 +52,24 @@ public class LinkNumActivity extends AppCompatActivity {
             }
         });
         **/
+
+        Button addContactButton = findViewById(R.id.addContactButton);
+        addContactButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openContactAddActivity();
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItem = (String) parent.getItemAtPosition(position);
+                openContactEditActivity(selectedItem, position);
+            }
+        });
+
+
         // READ_CONTACTS 권한 확인
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -63,6 +83,12 @@ public class LinkNumActivity extends AppCompatActivity {
         }
     }
 
+    private void openContactEditActivity(String contactInfo, int position) {
+        Intent intent = new Intent(this, ContactAddActivity.class);
+        intent.putExtra("contactInfo", contactInfo);
+        intent.putExtra("editedPosition", position); // 현재 선택된 아이템의 위치를 전달
+        startActivityForResult(intent, ADD_CONTACT_REQUEST_CODE);
+    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -76,6 +102,42 @@ public class LinkNumActivity extends AppCompatActivity {
                 getContacts();
             } else {
                 // Permission denied, you may want to show a message to the user
+            }
+        }
+    }
+
+    private static final int ADD_CONTACT_REQUEST_CODE = 123;
+
+    private void openContactAddActivity() {
+        Intent intent = new Intent(this, ContactAddActivity.class);
+        startActivityForResult(intent, ADD_CONTACT_REQUEST_CODE);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == ADD_CONTACT_REQUEST_CODE && resultCode == RESULT_OK) {
+            if (data != null) {
+                if (data.hasExtra("addedContact")) {
+                    // 추가 모드일 경우
+                    String addedContact = data.getStringExtra("addedContact");
+                    contactList.add(addedContact);
+                    Log.d("LinkNumActivity", "Added contact: " + addedContact);
+
+                } else if (data.hasExtra("editedPosition")) {
+                    // 수정 모드일 경우
+                    int editedPosition = data.getIntExtra("editedPosition", -1);
+                    String editedContact = data.getStringExtra("editedContact");
+
+                    if (editedPosition != -1) {
+                        Log.d("LinkNumActivity", "Edited position: " + editedPosition);
+                        Log.d("LinkNumActivity", "Edited contact: " + editedContact);
+                        // 기존 위치의 데이터를 수정
+                        contactList.set(editedPosition, editedContact);
+                    }
+                }
+
+                ((MyAdapter) listView.getAdapter()).notifyDataSetChanged();
             }
         }
     }

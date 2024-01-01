@@ -1,0 +1,14 @@
+<resources>
+
+    <!-- 앱 전체의 테마 설정 -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- 다른 스타일 속성들... -->
+        <item name="cardViewStyle">@style/CardView</item>
+    </style>
+
+    <!-- CardView 스타일 설정 -->
+    <style name="CardView" parent="CardView">
+        <item name="cardCornerRadius">8dp</item>
+    </style>
+
+</resources>
