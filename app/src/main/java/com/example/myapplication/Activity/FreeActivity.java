@@ -22,6 +22,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -79,6 +80,7 @@ public class FreeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // 버튼 클릭시 한번 데이터를 업데이트
                 CurrentCall();
+
             }
         });
 
@@ -143,8 +145,8 @@ public class FreeActivity extends AppCompatActivity {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                     && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 // GPS_PROVIDER와 NETWORK_PROVIDER 모두를 사용하여 위치 업데이트 요청
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListener);
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, locationListener);
             }
         }
     }
@@ -155,6 +157,13 @@ public class FreeActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 try {
+                    //로딩 애니메이션 추가
+                    LottieAnimationView loadingView = findViewById(R.id.freeweather);
+                    loadingView.setAnimation("loading.json");
+                    loadingView.setVisibility(View.VISIBLE);
+                    loadingView.playAnimation();
+                    loadingView.playAnimation();
+                    loadingView.playAnimation();
                     // 시간 데이터 가져오기
                     long now = System.currentTimeMillis();
                     Date date = new Date(now);
@@ -175,8 +184,25 @@ public class FreeActivity extends AppCompatActivity {
                     // 날씨 키값 받기
                     JSONArray weatherJson = jsonObject.getJSONArray("weather");
                     JSONObject weatherObj = weatherJson.getJSONObject(0);
-                    String weather = weatherObj.getString("description");
+                    String weather = weatherObj.getString("main");
                     weatherView.setText(weather);
+                    LottieAnimationView animationView = findViewById(R.id.freeweather);
+                    if (weather.equals("Clear")) {
+                        animationView.setAnimation("sunny.json");
+                    } else if(weather.equals("Clouds")){
+                        animationView.setAnimation("cloud.json");
+                    } else if(weather.equals("Rain")){
+                        animationView.setAnimation("rainy.json");
+                    } else if(weather.equals("Snow")){
+                        animationView.setAnimation("snow.json");
+                    } else {
+                    animationView.setAnimation("default.json");
+                    }
+                    animationView.setVisibility(View.VISIBLE);
+                    animationView.playAnimation();
+                    animationView.loop(true);
+
+
 
                     // 기온 키값 받기
                     JSONObject tempK = new JSONObject(jsonObject.getString("main"));

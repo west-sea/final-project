@@ -3,13 +3,16 @@ package com.example.myapplication.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 
+import androidx.annotation.UiThread;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.R;
 
 public class MainActivity extends AppCompatActivity {
+
     //branch 예제
     @Override
     protected void onCreate(Bundle savedInstanceState) {
