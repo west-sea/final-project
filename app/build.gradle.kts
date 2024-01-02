@@ -43,4 +43,5 @@ dependencies {
     annotationProcessor ("com.github.bumptech.glide:compiler:4.11.0")
     implementation ("com.google.firebase:firebase-ml-vision:24.0.3")
     implementation ("com.google.firebase:firebase-ml-vision-face-model:20.0.1")
+    implementation ("com.airbnb.android:lottie:5.0.2")
 }
