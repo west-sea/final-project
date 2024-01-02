@@ -10,6 +10,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="50dp"
+        android:layout_above="@+id/btnSelectImage"
         android:numColumns="3"
         android:horizontalSpacing="8dp"
         android:verticalSpacing="8dp"
