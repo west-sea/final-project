@@ -1,4 +1,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="oval">
-    <solid android:color="#222222"/>
+    <solid android:color="#6f91aa"/>
+    <stroke
+        android:width="2dp"
+        android:color="#FFFFFF"/> <!-- 흰색 선의 색상을 지정합니다. -->
 </shape>
