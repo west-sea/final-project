@@ -27,7 +27,7 @@ public class ImageAdapter extends ArrayAdapter<Uri> {
         ImageView imageView;
         if (convertView == null) {
             imageView = new ImageView(getContext());
-            imageView.setLayoutParams(new LinearLayout.LayoutParams(200, 200)); // 이미지 크기 조절
+            imageView.setLayoutParams(new LinearLayout.LayoutParams(420, 420)); // 이미지 크기 조절
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         } else {
             imageView = (ImageView) convertView;
