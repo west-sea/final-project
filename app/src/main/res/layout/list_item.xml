@@ -5,7 +5,6 @@
     android:layout_height="wrap_content"
     android:descendantFocusability="blocksDescendants"
     android:orientation="horizontal"
-    android:background="@drawable/corner_shape"
     android:paddingBottom="10dp"
     android:layout_marginBottom="16dp">
 
