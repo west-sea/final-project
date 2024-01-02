@@ -120,7 +120,7 @@ public class ImgActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return "없음";
+        return "input";
     }
 
 
@@ -128,12 +128,12 @@ public class ImgActivity extends AppCompatActivity {
     // 이름 수정 팝업창을 띄우는 메서드
     private void showRenameDialog(final int position, String currentName, final ArrayList<JSONObject> imageInfoList) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("이름 수정");
+        builder.setTitle("NAME");
         final EditText input = new EditText(this);
         input.setText(currentName);
         builder.setView(input);
 
-        builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String newName = input.getText().toString();
@@ -147,7 +147,7 @@ public class ImgActivity extends AppCompatActivity {
             }
         });
 
-        builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
@@ -192,7 +192,7 @@ public class ImgActivity extends AppCompatActivity {
 
     private void openCamera() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(intent, CAMERA_REQUEST_CODE);
+        startActivityForResult(intent, CAMERA_REQUEST_CODE);
 
     }
 
@@ -237,7 +237,7 @@ public class ImgActivity extends AppCompatActivity {
                 // 이미지 정보 생성 및 추가
                 JSONObject imageInfo = new JSONObject();
                 try {
-                    imageInfo.put("imageName", "없음");
+                    imageInfo.put("imageName", "input");
                     // 이미지 정보를 리스트에 추가
                     imageInfoList.add(imageInfo);
                 } catch (JSONException e) {
@@ -253,7 +253,7 @@ public class ImgActivity extends AppCompatActivity {
                     // 이미지 정보 생성 및 추가
                     JSONObject imageInfo = new JSONObject();
                     try {
-                        imageInfo.put("imageName", "없음");
+                        imageInfo.put("imageName", "input");
                         // 이미지 정보를 리스트에 추가
                         imageInfoList.add(imageInfo);
                     } catch (JSONException e) {
