@@ -56,7 +56,7 @@
             android:backgroundTint="#539DD8"
             android:layout_width="200dp"
             android:layout_height="35dp"
-            android:text="SAVE"
+            android:text="EDIT"
             android:elevation="2dp"
             android:translationZ="2dp"/>
     </LinearLayout>

@@ -30,6 +30,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.myapplication.Class.PhoneBook;
 import com.example.myapplication.R;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class LinkNumActivity extends AppCompatActivity {
     private static final int READ_CONTACTS_PERMISSION_REQUEST = 1;
 
     private ListView listView;
-    private ArrayList<String> contactList = new ArrayList<>();
+    private ArrayList<PhoneBook> contactList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +71,8 @@ public class LinkNumActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String selectedItem = (String) parent.getItemAtPosition(position);
-                openEditDialog(selectedItem, position);
+                PhoneBook selectedContact = (PhoneBook) parent.getItemAtPosition(position);
+                openEditDialog(selectedContact, position);
             }
         });
 
@@ -126,8 +127,8 @@ public class LinkNumActivity extends AppCompatActivity {
                 String number = numberEditText.getText().toString().trim();
 
                 if (!name.isEmpty() && !number.isEmpty()) {
-                    String newContact = name + ": " + number;
-                    contactList.add(newContact);
+                    PhoneBook phoneBook = new PhoneBook(name, number);
+                    contactList.add(phoneBook);
 
                     ((MyAdapter) listView.getAdapter()).notifyDataSetChanged();
 
@@ -141,21 +142,20 @@ public class LinkNumActivity extends AppCompatActivity {
         contactDialog.show();
     }
 
-    private void openEditDialog(String contactInfo, int position) {
+    private void openEditDialog(PhoneBook selectedContact, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View dialogView = getLayoutInflater().inflate(R.layout.edit_dialog_layout, null);
         builder.setView(dialogView);
 
         AlertDialog editDialog = builder.create();
 
-        EditText editNameEditText = dialogView.findViewById(R.id.editNameEditText);
-        EditText editNumberEditText = dialogView.findViewById(R.id.editNumberEditText);
-        Button updateButton = dialogView.findViewById(R.id.updateButton);
+        EditText editNameEditText = dialogView.findViewById(R.id.nameEditText);
+        EditText editNumberEditText = dialogView.findViewById(R.id.numberEditText);
+        Button updateButton = dialogView.findViewById(R.id.saveButton);
 
         // 기존 데이터 표시
-        String[] parts = contactInfo.split(":");
-        String name = parts[0].trim();
-        String number = parts[1].trim();
+        String name = selectedContact.getName();
+        String number = selectedContact.getNumber();
 
         editNameEditText.setText(name);
         editNumberEditText.setText(number);
@@ -167,8 +167,8 @@ public class LinkNumActivity extends AppCompatActivity {
                 String newNumber = editNumberEditText.getText().toString().trim();
 
                 if (!newName.isEmpty() && !newNumber.isEmpty()) {
-                    String editedContact = newName + ": " + newNumber;
-                    contactList.set(position, editedContact);
+                    PhoneBook newPhoneBook = new PhoneBook(newName, newNumber);
+                    contactList.set(position, newPhoneBook);
 
                     ((MyAdapter) listView.getAdapter()).notifyDataSetChanged();
 
@@ -189,14 +189,14 @@ public class LinkNumActivity extends AppCompatActivity {
             if (data != null) {
                 if (data.hasExtra("addedContact")) {
                     // 추가 모드일 경우
-                    String addedContact = data.getStringExtra("addedContact");
+                    PhoneBook addedContact = (PhoneBook) data.getSerializableExtra("addedContact");
                     contactList.add(addedContact);
                     Log.d("LinkNumActivity", "Added contact: " + addedContact);
 
                 } else if (data.hasExtra("editedPosition")) {
                     // 수정 모드일 경우
                     int editedPosition = data.getIntExtra("editedPosition", -1);
-                    String editedContact = data.getStringExtra("editedContact");
+                    PhoneBook editedContact = (PhoneBook) data.getSerializableExtra("editedContact");
 
                     if (editedPosition != -1) {
                         Log.d("LinkNumActivity", "Edited position: " + editedPosition);
@@ -227,7 +227,8 @@ public class LinkNumActivity extends AppCompatActivity {
             while (cursor.moveToNext()) {
                 String name = cursor.getString(nameIndex);
                 String number = cursor.getString(numberIndex);
-                contactList.add(name + ": " + number);
+                PhoneBook phoneBook = new PhoneBook(name, number);
+                contactList.add(phoneBook);
             }
             cursor.close();
         }
@@ -237,20 +238,16 @@ public class LinkNumActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
     }
 
-    private void dialPhoneNumber(String selectedItem) {
-        // 전화 번호 추출
-        String[] parts = selectedItem.split(":");
-        String phoneNumber = parts[1].trim();
+    private void dialPhoneNumber(PhoneBook phoneBook) {
+        String phoneNumber = phoneBook.getNumber();
 
         Intent dialIntent = new Intent(Intent.ACTION_DIAL);
         dialIntent.setData(Uri.parse("tel:" + phoneNumber));
         startActivity(dialIntent);
     }
 
-    private void sendSMS(String selectedItem, String message)
-    {
-        String[] parts = selectedItem.split(":");
-        String phoneNumber = parts[1].trim();
+    private void sendSMS(PhoneBook phoneBook, String message) {
+        String phoneNumber = phoneBook.getNumber();
 
         Intent smsIntent = new Intent(Intent.ACTION_SENDTO);
         smsIntent.setData(Uri.parse("smsto:" + phoneNumber));
@@ -287,19 +284,21 @@ public class LinkNumActivity extends AppCompatActivity {
                 view = inflater.inflate(R.layout.list_item, parent, false);
             }
 
-            TextView textView = view.findViewById(R.id.textView);
+            TextView nameTextView = view.findViewById(R.id.textView);
+            TextView numberTextView = view.findViewById(R.id.text_number);
             Button button1 = view.findViewById(R.id.button1);
             Button button2 = view.findViewById(R.id.button2);
 
-            String contactInfo = getItem(position).toString();
-            textView.setText(contactInfo);
+            PhoneBook phoneBook = (PhoneBook) getItem(position);
+            nameTextView.setText(phoneBook.getName());
+            numberTextView.setText(phoneBook.getNumber());
 
             button1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // 버튼1 클릭 시 수행할 동작
-                    Toast.makeText(LinkNumActivity.this, "Button 1 Clicked: " + contactInfo, Toast.LENGTH_SHORT).show();
-                    dialPhoneNumber(contactInfo);
+                    Toast.makeText(LinkNumActivity.this, "버튼 1 클릭: " + phoneBook.getName(), Toast.LENGTH_SHORT).show();
+                    dialPhoneNumber(phoneBook);
                 }
             });
 
@@ -307,8 +306,8 @@ public class LinkNumActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     // 버튼2 클릭 시 수행할 동작
-                    Toast.makeText(LinkNumActivity.this, "Button 2 Clicked: " + contactInfo, Toast.LENGTH_SHORT).show();
-                    sendSMS(contactInfo, "문자 전송");
+                    Toast.makeText(LinkNumActivity.this, "버튼 2 클릭: " + phoneBook.getName(), Toast.LENGTH_SHORT).show();
+                    sendSMS(phoneBook, "문자 전송");
                 }
             });
 
