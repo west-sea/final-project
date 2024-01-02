@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="@drawable/sky_background"
+    android:background="#94cefe"
     tools:context=".MainActivity">
 
     <ListView
@@ -14,16 +14,21 @@
         android:focusable="true"
         android:clickable="true"
         android:layout_height="0dp"
+        android:dividerHeight="20dp"
+        android:divider="#94cefe"
         android:layout_weight="1"
         android:layout_marginBottom="16dp" /> <!-- 리스트뷰 아래에 여백 추가 -->
 
     <Button
         android:id="@+id/addContactButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Contact"
+        android:layout_width="162dp"
+        android:layout_height="61dp"
         android:layout_gravity="end|bottom"
-        android:layout_marginBottom="100dp"
-        android:onClick="openContactAddActivity" />
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/numadd_button"
+        android:onClick="openContactAddActivity"
+        android:text="Add Contact"
+        android:textColor="@color/white"/>
 
 </LinearLayout>
