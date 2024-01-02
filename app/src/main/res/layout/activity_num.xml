@@ -6,6 +6,7 @@
     android:id="@+id/numback"
     android:orientation="vertical"
     android:padding="16dp"
+    android:background="#94cefe"
     tools:context=".MainActivity">
 
     <ListView
