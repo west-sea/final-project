@@ -7,6 +7,16 @@
     android:background="@drawable/main_background"
     tools:context=".Activity.MainActivity">
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/main_ani"
+        app:lottie_fileName="main-animation.json"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        android:paddingBottom="100dp"
+        />
+
     <Button
         android:id="@+id/imgbut"
         android:layout_width="wrap_content"
@@ -18,10 +28,11 @@
         android:textColor="@color/white"
         android:textSize="10sp"
         android:drawableTop="@drawable/ic_img"
+        android:drawablePadding="8dp"
         app:layout_constraintEnd_toStartOf="@id/freebut"
         app:layout_constraintHorizontal_bias="0.33"
         app:layout_constraintStart_toEndOf="@id/numbut"
-        android:paddingBottom="32dp"
+        android:paddingBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
  />
 
@@ -35,11 +46,12 @@
         android:textColor="@color/white"
         android:textSize="10sp"
         android:drawableTop="@drawable/ic_num"
+        android:drawablePadding="8dp"
         android:background="@drawable/button_img"
         app:layout_constraintEnd_toStartOf="@id/imgbut"
         app:layout_constraintHorizontal_bias="0.33"
         app:layout_constraintStart_toStartOf="parent"
-        android:paddingBottom="32dp"
+        android:paddingBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <Button
@@ -53,11 +65,13 @@
         android:textSize="10sp"
 
         android:drawableTop="@drawable/ic_free"
+        android:drawablePadding="8dp"
         android:background="@drawable/button_img"
+        android:drawablePadding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.33"
         app:layout_constraintStart_toEndOf="@id/imgbut"
-        android:paddingBottom="32dp"
+        android:paddingBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
