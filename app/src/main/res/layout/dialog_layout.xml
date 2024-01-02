@@ -3,6 +3,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@drawable/corner_shape2"
+    android:elevation="10dp"
     android:padding="16dp">
 
     <EditText
@@ -20,6 +21,7 @@
 
     <Button
         android:id="@+id/saveButton"
+        android:backgroundTint="#94cefe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="저장"/>
