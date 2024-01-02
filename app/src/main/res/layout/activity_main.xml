@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/main_background"
     tools:context=".Activity.MainActivity">
 
     <Button
@@ -13,7 +14,9 @@
         android:layout_marginTop="684dp"
         android:background="@drawable/button_img"
         android:text="IMAGE"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="20sp"
         android:drawableTop="@drawable/ic_img"
         app:layout_constraintEnd_toStartOf="@id/freebut"
         app:layout_constraintHorizontal_bias="0.33"
@@ -28,7 +31,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="684dp"
         android:text="NUMBER"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="20sp"
         android:drawableTop="@drawable/ic_num"
         android:background="@drawable/button_img"
         app:layout_constraintEnd_toStartOf="@id/imgbut"
@@ -43,7 +48,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="684dp"
         android:text="FREE"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
+
         android:drawableTop="@drawable/ic_free"
         android:background="@drawable/button_img"
         app:layout_constraintEnd_toEndOf="parent"
