@@ -3,7 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#94cefe">
+    android:id="@+id/numback"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#94cefe"
+    tools:context=".MainActivity">
 
     <ListView
         android:id="@+id/list_items"
