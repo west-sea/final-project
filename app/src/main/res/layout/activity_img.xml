@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#94cefe"
-    android:padding="16dp">
+    android:background="@drawable/main_background"
+    android:padding="16dp"
+    tools:ignore="ExtraText">
 
     <GridView
         android:id="@+id/imageGridView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
+        android:layout_marginTop="21dp"
         android:layout_marginBottom="50dp"
-        android:numColumns="3"
-        android:horizontalSpacing="1dp"
-        android:verticalSpacing="1dp"
-        android:stretchMode="columnWidth" />
+        android:horizontalSpacing="3dp"
+        android:numColumns="auto_fit"
+        android:verticalSpacing="3dp" />
 
     <Button
         android:id="@+id/btnSelectImage"
@@ -25,10 +27,14 @@
         android:layout_centerHorizontal="true"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="50dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="5dp"
         android:drawableTop="@drawable/img_add"
         android:background="@drawable/button_img"
-        android:text="Img Add" />
+        android:text="Img Add"
+        android:textSize="10sp"
+        android:textColor="@color/white"
+        android:drawablePadding="8dp"
+        />
 
     <Button
         android:id="@+id/imgCam"
@@ -37,9 +43,13 @@
         android:layout_alignParentBottom="true"
         android:layout_marginStart="50dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="5dp"
         android:drawableTop="@drawable/img_cam"
         android:background="@drawable/button_img"
-        android:text="Cam" />
+        android:text="Cam"
+        android:textSize="10sp"
+        android:textColor="@color/white"
+        android:drawablePadding="8dp"
+        />
 
 </RelativeLayout>
