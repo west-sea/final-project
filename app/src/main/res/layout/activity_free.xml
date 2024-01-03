@@ -23,6 +23,7 @@
     <ImageButton
         android:id="@+id/imageButton"
         android:layout_width="match_parent"
+        android:layout_marginBottom="60dp"
         android:layout_height="200dp"
         android:background="#94cefe"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -45,6 +46,17 @@
         tools:ignore="MissingConstraints" />
 
     <ImageButton
+        android:id="@+id/chatButton"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="36dp"
+        android:background="@drawable/corner_shape2"
+        android:src="@drawable/ic_chat"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageButton
         android:id="@+id/freeCam"
         android:layout_width="50dp"
         android:layout_height="50dp"

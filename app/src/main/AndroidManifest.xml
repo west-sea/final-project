@@ -46,6 +46,9 @@
             </intent-filter>
 
         </activity>
+        <activity android:name=".Activity.ChatActivity">
+            <!-- ChatActivity와 관련된 설정 추가 -->
+        </activity>
         <activity
             android:name=".Activity.LinkNumActivity"
             android:exported="true"> <!-- true로 설정하면 다른 앱에서도 이 액티비티에 접근 가능 -->
