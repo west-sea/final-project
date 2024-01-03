@@ -44,4 +44,5 @@ dependencies {
     implementation ("com.google.firebase:firebase-ml-vision:24.0.3")
     implementation ("com.google.firebase:firebase-ml-vision-face-model:20.0.1")
     implementation ("com.airbnb.android:lottie:5.0.2")
+    implementation ("com.squareup.okhttp3:okhttp:4.10.0")
 }

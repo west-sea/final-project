@@ -105,6 +105,17 @@ public class FreeActivity extends AppCompatActivity {
             }
         });
 
+        ImageButton button4 = findViewById(R.id.chatButton);
+        button4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 전화 앱을 열기 위한 Intent 생성
+                Intent chatIntent = new Intent(FreeActivity.this, ChatActivity.class);
+                startActivity(chatIntent);
+            }
+        });
+
+
         // Volley를 쓸 때 큐가 비어있으면 새로운 큐 생성하기
         if (requestQueue == null) {
             requestQueue = Volley.newRequestQueue(getApplicationContext());
