@@ -13,7 +13,7 @@
 
 우준석 [wminsoo1 - Overview](https://github.com/wminsoo1)
 
-https://www.notion.so/madcamp/Weather-Tracker-e4126985ab3a47ce80dfe17d8e87031c?pvs=4
+노션 주소 : https://www.notion.so/madcamp/Weather-Tracker-e4126985ab3a47ce80dfe17d8e87031c?pvs=4
 ## DEVELOPMENT ENV.
 - Adobe Illustrator
 - Android Studio (Java)
