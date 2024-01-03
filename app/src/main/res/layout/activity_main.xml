@@ -5,7 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/main_background"
+    android:id="@+id/main_activity"
     tools:context=".Activity.MainActivity">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/splash"
+        app:lottie_fileName="open.json"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_gravity="center"
+        />
 
     <com.airbnb.lottie.LottieAnimationView
         android:layout_width="match_parent"

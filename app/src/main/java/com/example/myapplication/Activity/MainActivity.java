@@ -9,6 +9,7 @@ import android.widget.Button;
 import androidx.annotation.UiThread;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.myapplication.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -18,6 +19,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        LottieAnimationView animationView = findViewById(R.id.splash); // LottieAnimationView 가져오기
+        animationView.setAnimation("open.json"); // 애니메이션 파일 설정
+
+        // 애니메이션이 반복되지 않도록 설정하려면 주석 해제
+        // animationView.loop(false);
+
+        animationView.playAnimation(); // 애니메이션 실행
 
         Button numButton=findViewById(R.id.numbut);
         numButton.setOnClickListener(new View.OnClickListener() {
