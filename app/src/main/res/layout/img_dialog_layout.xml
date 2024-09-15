@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_margin="30dp"
+    android:padding="16dp">
+
+    <!-- Edit text for the image name -->
+    <EditText
+        android:id="@+id/editImageName"
+        android:padding="10dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="10dp"
+        android:textColorHint="@color/white"
+        android:drawablePadding="13dp"
+        android:textColor="@color/white"
+        android:background="@drawable/circular_background"
+        android:drawableLeft="@drawable/baseline_image_24"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Image Name"/>
+
+    <!-- Second EditText with Button for DatePickerDialog -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:paddingHorizontal="20dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- Edit text for displaying the selected date -->
+        <EditText
+            android:id="@+id/editSelectedDate"
+            android:drawableLeft="@drawable/baseline_check_24"
+            android:textColorHint="@color/white"
+            android:textColor="@color/white"
+            android:drawablePadding="13dp"
+            android:layout_width="100dp"
+            android:padding="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Selected Date"
+            android:focusable="false"
+            android:background="@drawable/circular_background"
+            android:inputType="none"
+            android:clickable="false"/>
+
+        <!-- Button to show the DatePickerDialog -->
+        <Button
+            android:id="@+id/showDatePickerButton"
+            android:background="@drawable/circular_background"
+            android:backgroundTint="#539DD8"
+            android:layout_marginStart="3dp"
+            android:layout_width="45dp"
+            android:layout_height="44dp"
+            android:paddingTop="-10dp"
+            android:padding="10dp"
+            android:drawableLeft="@drawable/baseline_calendar_month_24"
+
+
+            />
+    </LinearLayout>
+
+    <!-- Edit text for the description -->
+    <EditText
+        android:id="@+id/editDescription"
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:textColorHint="@color/white"
+        android:textColor="@color/white"
+        android:layout_marginHorizontal="20dp"
+        android:drawablePadding="13dp"
+        android:drawableLeft="@drawable/baseline_sticky_note_2_24"
+        android:background="@drawable/circular_background"
+        android:layout_height="wrap_content"
+        android:hint="Description"/>
+
+</LinearLayout>
